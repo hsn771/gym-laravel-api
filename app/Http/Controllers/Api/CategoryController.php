@@ -18,50 +18,38 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-         $validated = $request->validate([
-            'name' => 'required|string|max:255'
-        ]);
-
-        $category = Category::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Category created successfully',
-            'data' => $category
-        ], 201);
+        $user = Category::create($request->all());
+        return response()->json(['message' => 'User Created ', 'user' => $user, 'error' => 0], 200);
     }
 
     public function show($id)
     {
-         return response()->json([
-            'success' => true,
-            'data' => $category
-        ], 200);
+        $user = Category::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found', 'error' => 1], 404);
+        }
+        return response()->json(['user' => $user, 'error' => 0], 200);
     }
 
     public function update(Request $request, $id)
     {
-         $validated = $request->validate([
-            'name' => 'required|string|max:255'
-        ]);
+        $user = Category::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found', 'error' => 1], 404);
+        }
 
-        $category->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Category updated successfully',
-            'data' => $category
-        ], 200);
+        $user->update($request->all());
+        return response()->json(['message' => 'User Updated ', 'user' => $user, 'error' => 0], 200);
     }
 
     public function destroy($id)
     {
-       $category->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Category deleted successfully'
-        ], 200);
+        $user = Category::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found', 'error' => 1], 404);
+        }
+        $user->delete();
+        return response()->json(['message' => 'User Deleted ', 'error' => 0], 200);
     }
 
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CourseController;
+use App\Http\Controllers\Api\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:sanct
 Route::apiResource('users', UserController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('courses', CourseController::class);
+Route::apiResource('teacher', TeacherController::class);
 
 // Route::get('/supply-areas', [FrontController::class, 'supplyAreas']);
 // Route::get('/river-points', [FrontController::class, 'riverPoints']);
