@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\TeacherController;
+use App\Http\Controllers\Api\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,7 @@ Route::apiResource('users', UserController::class);
 Route::apiResource('categories', CategoryController::class);
 Route::apiResource('courses', CourseController::class);
 Route::apiResource('teacher', TeacherController::class);
+Route::apiResource('orders', OrderController::class);
 
 // Route::get('/supply-areas', [FrontController::class, 'supplyAreas']);
 // Route::get('/river-points', [FrontController::class, 'riverPoints']);

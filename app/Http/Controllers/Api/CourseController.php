@@ -18,8 +18,26 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-        $user = Course::create($request->all());
-        return response()->json(['message' => 'User Created ', 'user' => $user, 'error' => 0], 200);
+        $requestdata = $request->all();
+
+        // ✅ Image Upload Handling
+        if ($request->hasFile('files')) {
+    $uploadedFiles = $request->file('files');
+    $filePaths = [];
+
+    foreach ($uploadedFiles as $file) {
+        $name = rand() . '_' . $file->getClientOriginalName(); // same naming style
+        $file->move(public_path('course_file'), $name); // move to /public/teacher_file
+        $filePaths = 'course_file/' . $name; // relative path
+    }
+
+    // Example: if you want to save as JSON array in DB
+    $requestdata['image'] = $filePaths;
+}
+
+
+        $user = Course::create($requestdata);
+        return response()->json(['message' => 'User Created', 'user' => $user, 'error' => 0], 200);
     }
 
     public function show($id)
@@ -38,8 +56,17 @@ class CourseController extends Controller
             return response()->json(['message' => 'User not found', 'error' => 1], 404);
         }
 
-        $user->update($request->all());
-        return response()->json(['message' => 'User Updated ', 'user' => $user, 'error' => 0], 200);
+        $requestdata = $request->all();
+
+        // ✅ Image Upload Handling
+        if($request->hasFile('image')){
+            $imageName = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $requestdata['image'] = 'images/'.$imageName;
+        }
+
+        $user->update($requestdata);
+        return response()->json(['message' => 'User Updated', 'user' => $user, 'error' => 0], 200);
     }
 
     public function destroy($id)
@@ -49,8 +76,7 @@ class CourseController extends Controller
             return response()->json(['message' => 'User not found', 'error' => 1], 404);
         }
         $user->delete();
-        return response()->json(['message' => 'User Deleted ', 'error' => 0], 200);
+        return response()->json(['message' => 'User Deleted', 'error' => 0], 200);
     }
-
 
 }
